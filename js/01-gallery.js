@@ -20,21 +20,30 @@ function openEnlargedImage(event) {
   event.preventDefault();
   if (event.target.nodeName !== "IMG") {
     return;
-  } else {
-    const enlargedImageSrc = event.target.dataset.source;
-    const instance = basicLightbox.create(`
+  }
+  const enlargedImageSrc = event.target.dataset.source;
+  const instance = basicLightbox.create(
+    `
     <img src='${enlargedImageSrc}' width='800' height='600'>
-`);
-    instance.show();
-
-    if (basicLightbox.visible()) {
-      window.addEventListener("keydown", closeByEsc);
-    }
-    function closeByEsc({ code }) {
-      if (code === "Escape") {
-        instance.close();
+`,
+    {
+      onShow: (instance) => {
+        window.addEventListener("keydown", closeByEsc);
+        instance.element().addEventListener("click", () => {
+          instance.close();
+        });
+      },
+      onClose: () => {
         window.removeEventListener("keydown", closeByEsc);
-      }
+      },
+    }
+  );
+
+  instance.show();
+
+  function closeByEsc({ code }) {
+    if (code === "Escape") {
+      instance.close();
     }
   }
 }

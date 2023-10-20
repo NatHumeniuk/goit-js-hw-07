@@ -21,13 +21,4 @@ const lightbox = new SimpleLightbox(".gallery a", {
   captionsData: "alt",
 });
 
-gallery.addEventListener("click", openEnlargedImage);
-
-function openEnlargedImage(event) {
-  event.preventDefault();
-
-  if (event.target.nodeName === "IMG") {
-    lightbox.on(event.target.parentNode.getAttribute("href"));
-  }
-}
 console.log(galleryItems);
